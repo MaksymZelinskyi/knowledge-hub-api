@@ -1,4 +1,4 @@
-package com.javadevmz.knowledgehub.service;
+package com.javadevmz.knowledgehub.config;
 
 import com.javadevmz.knowledgehub.model.User;
 import io.jsonwebtoken.Claims;

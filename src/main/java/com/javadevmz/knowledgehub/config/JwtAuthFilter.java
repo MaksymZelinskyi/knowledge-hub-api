@@ -1,6 +1,5 @@
 package com.javadevmz.knowledgehub.config;
 
-import com.javadevmz.knowledgehub.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -19,10 +19,21 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
+
     @Enumerated
     private Role role;
+
+    public User(String username, String email, String firstName, String lastName, String password) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+    }
 
     public enum Role {
         ADMIN, CONTRIBUTOR, READER
     }
+
+
 }

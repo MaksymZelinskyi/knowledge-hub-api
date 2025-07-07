@@ -1,4 +1,4 @@
-package com.javadevmz.knowledgehub.service;
+package com.javadevmz.knowledgehub.config;
 
 import com.javadevmz.knowledgehub.model.User;
 import com.javadevmz.knowledgehub.repository.UserRepository;
@@ -16,6 +16,7 @@ import java.util.List;
 public class InDbUserDetailsService implements UserDetailsService {
 
     private final UserRepository repository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repository.findByUsername(username);
