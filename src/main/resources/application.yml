@@ -2,3 +2,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5433/knowledge_hub_db
+    username: postgres
+    password: Maxim.097
+
+server:
+  port: 3006

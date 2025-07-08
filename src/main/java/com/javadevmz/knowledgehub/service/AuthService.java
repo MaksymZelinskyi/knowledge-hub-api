@@ -24,6 +24,7 @@ public class AuthService {
 
     public String register(RegisterDto dto) {
         User user = new User(dto.username(),  dto.email(), dto.firstName(), dto.lastName(), encoder.encode(dto.password()));
+        user.setRole(User.Role.READER);
         userRepository.save(user);
         return jwtService.generateJwt(user);
     }
