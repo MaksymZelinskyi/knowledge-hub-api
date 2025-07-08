@@ -39,4 +39,9 @@ public class ArticleController {
     public void deleteArticle(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @GetMapping("/search")
+    public List<Article> getArticlesByTag(@RequestParam String tag) {
+        return service.searchArticlesByTag(tag);
+    }
 }
