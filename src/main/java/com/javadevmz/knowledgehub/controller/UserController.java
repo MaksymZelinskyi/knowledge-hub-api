@@ -13,10 +13,16 @@ public class UserController {
 
     private final UserRepository repository;
 
-    @PutMapping("/{id}/role")
-    public void setRole(@PathVariable Long id, @RequestBody String role) {
+    @PostMapping("/{id}/roles")
+    public void addRole(@PathVariable Long id, @RequestBody String role) {
         User user = repository.findById(id).orElseThrow();
-        user.setRole(User.Role.valueOf(role));
+        user.getRoles().add(User.Role.valueOf(role));
+    }
+
+    @DeleteMapping("/{id}/roles")
+    public void removeRole(@PathVariable Long id, @RequestBody String role) {
+        User user = repository.findById(id).orElseThrow();
+        user.getRoles().remove(User.Role.valueOf(role));
     }
 
     @GetMapping("/")

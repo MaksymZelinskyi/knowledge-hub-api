@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class User {
@@ -21,7 +23,7 @@ public class User {
     private String password;
 
     @Enumerated
-    private Role role;
+    private List<Role> roles;
 
     public User(String username, String email, String firstName, String lastName, String password) {
         this.username = username;
