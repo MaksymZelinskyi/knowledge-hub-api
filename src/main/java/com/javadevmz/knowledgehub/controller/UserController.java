@@ -2,35 +2,36 @@ package com.javadevmz.knowledgehub.controller;
 
 import com.javadevmz.knowledgehub.model.User;
 import com.javadevmz.knowledgehub.repository.UserRepository;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api/users")
+@RestController("/api")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserRepository repository;
 
-    @PostMapping("/{id}/roles")
-    public void addRole(@PathVariable Long id, @RequestBody String role) {
+    @PostMapping("/users/{id}/roles")
+    public void addRole(@PathVariable Long id, @NotBlank @RequestBody String role) {
         User user = repository.findById(id).orElseThrow();
         user.getRoles().add(User.Role.valueOf(role));
     }
 
-    @DeleteMapping("/{id}/roles")
-    public void removeRole(@PathVariable Long id, @RequestBody String role) {
+    @DeleteMapping("/users/{id}/roles")
+    public void removeRole(@PathVariable Long id, @NotBlank @RequestBody String role) {
         User user = repository.findById(id).orElseThrow();
         user.getRoles().remove(User.Role.valueOf(role));
     }
 
-    @GetMapping("/")
+    @GetMapping("/users/")
     public List<User> getUsers() {
         return repository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public User getUser(@PathVariable Long id) {
         return repository.findById(id).orElseThrow();
     }

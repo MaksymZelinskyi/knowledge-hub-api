@@ -4,6 +4,8 @@ import com.javadevmz.knowledgehub.dto.CreateArticleDto;
 import com.javadevmz.knowledgehub.dto.UpdateArticleDto;
 import com.javadevmz.knowledgehub.model.Article;
 import com.javadevmz.knowledgehub.service.ArticleService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,12 @@ public class ArticleController {
     }
 
     @PostMapping("/")
-    public void addArticle(@RequestBody CreateArticleDto dto) {
+    public void addArticle(@Valid @RequestBody CreateArticleDto dto) {
         service.addArticle(dto);
     }
 
     @PutMapping("/{id}")
-    public void updateArticle(@PathVariable Long id, @RequestBody UpdateArticleDto dto) {
+    public void updateArticle(@PathVariable Long id, @Valid @RequestBody UpdateArticleDto dto) {
         service.updateArticle(id, dto);
     }
 
@@ -41,7 +43,7 @@ public class ArticleController {
     }
 
     @GetMapping("/search")
-    public List<Article> getArticlesByTag(@RequestParam String tag) {
+    public List<Article> getArticlesByTag(@NotBlank @RequestParam String tag) {
         return service.searchArticlesByTag(tag);
     }
 }

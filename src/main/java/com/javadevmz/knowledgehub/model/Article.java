@@ -14,6 +14,7 @@ public class Article {
     @GeneratedValue
     private Long id;
 
+
     private String title;
     private String content;
 

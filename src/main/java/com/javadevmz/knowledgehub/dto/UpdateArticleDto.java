@@ -1,4 +1,6 @@
 package com.javadevmz.knowledgehub.dto;
 
-public record UpdateArticleDto(String title, String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdateArticleDto(@NotBlank String title, @NotBlank String content) {
 }
