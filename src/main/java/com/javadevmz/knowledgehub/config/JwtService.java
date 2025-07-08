@@ -1,10 +1,16 @@
 package com.javadevmz.knowledgehub.config;
 
+import com.javadevmz.knowledgehub.model.Token;
 import com.javadevmz.knowledgehub.model.User;
+import com.javadevmz.knowledgehub.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +19,13 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private static final String SECRET = "mYsupeR  SecrT";
     private static final int EXPIRATION = 1000 * 60 * 60;
+
+    private final TokenRepository tokenRepository;
 
     public String generateJwt(User user) {
         Date now = new Date();
@@ -41,9 +50,15 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String extractedUsername = extractUsername(token);
-        return extractedUsername.equals(userDetails.getUsername()) && !isExpired(token);
+    public boolean validateToken(String jwt, UserDetails userDetails) {
+        String extractedUsername = extractUsername(jwt);
+        Token token = tokenRepository.findByValue(jwt);
+        if(token==null) return false;
+        if(isExpired(token.getValue())) {
+            token.setExpired(true);
+            return false;
+        }
+        return !token.isRevoked() && extractedUsername.equals(userDetails.getUsername());
     }
 
     public boolean isExpired(String token) {
@@ -61,5 +76,14 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String extractJwt(HttpServletRequest req) {
+        String authorization = req.getHeader("Authorization");
+        String token = null;
+        if(authorization!=null && authorization.startsWith("Bearer")) {
+            token = authorization.substring(7);
+        }
+        return token;
     }
 }

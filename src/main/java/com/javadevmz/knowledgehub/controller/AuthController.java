@@ -4,6 +4,7 @@ import com.javadevmz.knowledgehub.dto.AuthResponse;
 import com.javadevmz.knowledgehub.dto.LoginDto;
 import com.javadevmz.knowledgehub.dto.RegisterDto;
 import com.javadevmz.knowledgehub.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,4 +26,8 @@ public class AuthController {
         return new AuthResponse(service.login(dto));
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest req) {
+        service.logout(req);
+    }
 }

@@ -24,21 +24,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
-        String token = null, username = null;
-
-        if(authorization!=null && authorization.startsWith("Bearer")) {
-            token = authorization.substring(7);
-            username = jwtService.extractUsername(token);
-        }
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() != null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(jwtService.validateToken(token, userDetails))  {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        }
-        filterChain.doFilter(request, response);
+       String token = jwtService.extractJwt(request);
+       String username = null;
+       if(token!=null) {
+           username = jwtService.extractUsername(token);
+       }
+       if(username != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+           UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+           if(jwtService.validateToken(token, userDetails))  {
+               UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+               authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+               SecurityContextHolder.getContext().setAuthentication(authToken);
+           }
+       }
+       filterChain.doFilter(request, response);
     }
 }
